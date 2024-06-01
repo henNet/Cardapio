@@ -5,6 +5,7 @@ import com.example.Cardapio.food.FoodRepository;
 import com.example.Cardapio.food.FoodRequestDTO;
 import com.example.Cardapio.food.FoodResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +47,21 @@ public class FoodController {
             dataFood.get().setImage(data.image());
 
             repository.save(dataFood.get());
+
+            return new FoodResponseDTO(dataFood.get());
+        }
+
+        return null;
+    }
+
+    @CrossOrigin()
+    @DeleteMapping(value = "/{id}")
+    public FoodResponseDTO deleteFood(@PathVariable Long id)
+    {
+        Optional<Food> dataFood = repository.findById(id);
+
+        if(dataFood.isPresent()) {
+            repository.deleteById(id);
 
             return new FoodResponseDTO(dataFood.get());
         }
